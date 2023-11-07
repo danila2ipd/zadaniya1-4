@@ -5,61 +5,41 @@
 
 using namespace std;
 
-bool isPasswordValid(const string& password) {
-    bool hasLowerCase = false;
-    bool hasUpperCase = false;
-    bool hasSpecialChar = false;
+bool validatePassword(const std::string& password) {
+	bool hasUppercase = false;
+	bool hasLowercase = false;
+	bool hasSpecialCharacter = false;
 
-    
-    for (char c : password) {
-        if (islower(c)) {  
-            hasLowerCase = true;
-        }
-        else if (isupper(c)) { 
-            hasUpperCase = true;
-        }
-        else if (ispunct(c) || isdigit(c)) {  
-            hasSpecialChar = true;
-        }
-    }
+	for (char c : password) {
+		if (isupper(c)) {
+			hasUppercase = true;
+		}
+		else if (islower(c)) {
+			hasLowercase = true;
+		}
+		else if (c == '!' || c == '@' || c == '#' || c == '$' || c == '%' || c == '&' ||
+			c == '*' || c == '+' || c == '?') {
+			hasSpecialCharacter = true;
+		}
+	}
 
-    return hasLowerCase && hasUpperCase && hasSpecialChar;
-}
-
-string generateRandomPassword(int length) {
-    string password;
-    string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*+?";
-
-    srand(time(0));  
-
-    for (int i = 0; i < length; i++) {
-        int randomIndex = rand() % chars.length();  
-        password += chars[randomIndex];  
-    }
-
-    return password;
-
+	return hasUppercase && hasLowercase && hasSpecialCharacter;
 }
 
 int main() {
-    setlocale(LC_ALL, "RUSSIAN");
-    int passwordLength;
+	setlocale(LC_ALL, "RUSSIAN");
+	string password;
+	cout << "Введите пароль: ";
+	cin >> password;
 
-    cout << "Введите длину пароля: ";
-    cin >> passwordLength;
+	if (validatePassword(password)) {
+		cout << "Пароль верный." << endl;
+	}
+	else {
+		cout << "Пароль неверный." << endl;
+	}
 
-    std::string password = generateRandomPassword(passwordLength);
-
-    cout << "Сгенерированный пароль: " << password << endl;
-
-    if (isPasswordValid(password)) {
-        cout << "Пароль действителен." << endl;
-    }
-    else {
-        cout << "Пароль не действителен." << endl;
-    }
-
-    return 0;
+	return 0;
 }
 
 
